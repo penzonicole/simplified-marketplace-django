@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block titulo %}Marketplace{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --text: #0f172a;
+            --muted: #64748b;
+            --border: #e2e8f0;
+            --success-bg: #dcfce7;
+            --success-text: #166534;
+            --error-bg: #fee2e2;
+            --error-text: #991b1b;
+            --warning-bg: #fef3c7;
+            --warning-text: #92400e;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        }
+
+        nav {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 0.9rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .brand {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.15s;
+        }
+
+        .nav-links a:hover { color: var(--primary); }
+
+        .cart-pill {
+            background: #eff6ff;
+            color: var(--primary) !important;
+            padding: 0.4rem 0.85rem;
+            border-radius: 999px;
+            font-weight: 600 !important;
+            border: 1px solid #bfdbfe;
+        }
+
+        .user-badge {
+            font-size: 0.9rem;
+            color: var(--muted);
+            background: #f1f5f9;
+            padding: 0.35rem 0.75rem;
+            border-radius: 6px;
+        }
+
+        .btn-login {
+            background: var(--primary);
+            color: #fff !important;
+            padding: 0.45rem 1rem;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .btn-login:hover { background: var(--primary-hover); }
+
+        main {
+            max-width: 1120px;
+            width: 100%;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+            flex: 1;
+        }
+
+        h1 { font-size: 1.75rem; font-weight: 700; margin-bottom: 1.25rem; color: var(--text); }
+        h2 { font-size: 1.25rem; font-weight: 600; margin-bottom: 0.9rem; color: var(--text); }
+
+        .msg {
+            padding: 0.85rem 1.1rem;
+            margin-bottom: 1.25rem;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            border: 1px solid transparent;
+        }
+        .msg.success { background: var(--success-bg); color: var(--success-text); border-color: #bbf7d0; }
+        .msg.error { background: var(--error-bg); color: var(--error-text); border-color: #fecaca; }
+        .msg.warning { background: var(--warning-bg); color: var(--warning-text); border-color: #fde68a; }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 0.65rem 1.15rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.15s, transform 0.1s;
+        }
+
+        .btn:hover:not(:disabled) { background: var(--primary-hover); }
+        .btn:active:not(:disabled) { transform: scale(0.98); }
+        .btn:disabled { background: #cbd5e1; color: #64748b; cursor: not-allowed; }
+        .btn-outline {
+            background: var(--surface);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+        .btn-outline:hover { background: #f1f5f9; }
+
+        .grade {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.25rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.15s, box-shadow 0.15s;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+        }
+
+        .preco { font-size: 1.35rem; font-weight: 700; color: var(--text); }
+
+        .table-wrapper {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+            margin-bottom: 1.5rem;
+        }
+
+        table { border-collapse: collapse; width: 100%; }
+        th, td { padding: 0.9rem 1.15rem; text-align: left; border-bottom: 1px solid var(--border); }
+        th { background: #f8fafc; font-weight: 600; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.03em; color: var(--muted); }
+        tr:last-child td, tr:last-child th { border-bottom: none; }
+
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            color: var(--muted);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border);
+            background: var(--surface);
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="{% url 'catalogo' %}" class="brand">🛍️ Marketplace</a>
+            <div class="nav-links">
+                <a href="{% url 'catalogo' %}">Catálogo</a>
+                <a href="{% url 'carrinho' %}" class="cart-pill">🛒 Carrinho (<span id="contador">0</span>)</a>
+                <a href="/admin/">Admin</a>
+                {% if user.is_staff %}
+                    <a href="{% url 'painel_vendedor' %}">📊 Relatório de Vendas</a>
+                {% endif %}
+                {% if user.is_authenticated %}
+                    <span class="user-badge">👤 Olá, <strong>{{ user.username }}</strong></span>
+                {% else %}
+                    <a href="{% url 'rest_framework:login' %}?next=/" class="btn-login">Entrar</a>
+                {% endif %}
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        {% for message in messages %}
+            <div class="msg {{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+        {% block conteudo %}{% endblock %}
+    </main>
+
+    <footer>
+        Marketplace Simplificado • Projeto 5 — Desenvolvido por Nicole (2026)
+    </footer>
+</body>
+</html>

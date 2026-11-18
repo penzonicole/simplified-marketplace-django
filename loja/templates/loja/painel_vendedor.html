@@ -1,0 +1,71 @@
+{% extends 'loja/base.html' %}
+{% block titulo %}Relatório de Vendas | Marketplace{% endblock %}
+
+{% block conteudo %}
+<h1>📊 Painel de Vendas ({{ user.username }})</h1>
+
+<div class="grade" style="margin-bottom: 2rem;">
+    <div class="card" style="border-left: 4px solid var(--primary);">
+        <span style="font-size: 0.85rem; font-weight: 600; color: var(--muted); text-transform: uppercase;">Unidades Vendidas</span>
+        <span class="preco" style="font-size: 2rem; margin-top: 0.4rem;">{{ resumo_geral.total_unidades|default:0 }}</span>
+    </div>
+    <div class="card" style="border-left: 4px solid #16a34a;">
+        <span style="font-size: 0.85rem; font-weight: 600; color: var(--muted); text-transform: uppercase;">Faturamento Total</span>
+        <span class="preco" style="font-size: 2rem; color: #16a34a; margin-top: 0.4rem;">R$ {{ resumo_geral.faturamento_total|default:"0.00" }}</span>
+    </div>
+</div>
+
+<h2>Desempenho por Produto</h2>
+{% if por_produto %}
+<div class="table-wrapper">
+    <table>
+        <thead>
+            <tr>
+                <th>Produto</th>
+                <th>Categoria</th>
+                <th>Unidades Vendidas</th>
+                <th>Faturamento</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in por_produto %}
+            <tr>
+                <td><strong>{{ item.produto__nome }}</strong></td>
+                <td>{{ item.produto__categoria__nome }}</td>
+                <td>{{ item.unidades_vendidas }}</td>
+                <td><strong>R$ {{ item.faturamento }}</strong></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="card" style="margin-bottom: 1.5rem;">
+    <p style="color: var(--muted);">Nenhuma venda registada ainda para os seus produtos.</p>
+</div>
+{% endif %}
+
+<h2>Desempenho por Categoria</h2>
+{% if por_categoria %}
+<div class="table-wrapper">
+    <table>
+        <thead>
+            <tr>
+                <th>Categoria</th>
+                <th>Unidades Vendidas</th>
+                <th>Faturamento</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cat in por_categoria %}
+            <tr>
+                <td><strong>{{ cat.produto__categoria__nome }}</strong></td>
+                <td>{{ cat.unidades_vendidas }}</td>
+                <td><strong>R$ {{ cat.faturamento }}</strong></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+{% endblock %}

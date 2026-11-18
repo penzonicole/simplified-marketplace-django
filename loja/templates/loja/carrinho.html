@@ -1,0 +1,61 @@
+{% extends 'loja/base.html' %}
+{% block titulo %}Carrinho | Marketplace{% endblock %}
+
+{% block conteudo %}
+<h1>🛒 Seu Carrinho</h1>
+
+{% if itens %}
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Produto</th>
+                    <th>Preço Unitário</th>
+                    <th>Quantidade</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in itens %}
+                <tr>
+                    <td><strong>{{ item.produto.nome }}</strong><br><small style="color: var(--muted);">{{ item.produto.categoria.nome }}</small></td>
+                    <td>R$ {{ item.produto.preco }}</td>
+                    <td>{{ item.quantidade }}</td>
+                    <td><strong>R$ {{ item.subtotal }}</strong></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr style="background: #f8fafc;">
+                    <th colspan="3" style="text-align: right; font-size: 1rem; color: var(--text);">Total do Pedido</th>
+                    <th style="font-size: 1.25rem; color: var(--primary);">R$ {{ total }}</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+        <a href="{% url 'catalogo' %}" class="btn btn-outline">← Continuar comprando</a>
+
+        {% if user.is_authenticated %}
+            <form method="post" action="{% url 'checkout' %}">
+                {% csrf_token %}
+                <button type="submit" class="btn" style="padding: 0.8rem 1.75rem; font-size: 1rem;">✓ Finalizar compra</button>
+            </form>
+        {% else %}
+            <div class="card" style="padding: 0.9rem 1.25rem; background: #eff6ff; border-color: #bfdbfe;">
+                <p style="font-size: 0.95rem;">
+                    Para finalizar a compra, <a href="{% url 'rest_framework:login' %}?next=/carrinho/" style="font-weight: 600; color: var(--primary);">entre na sua conta</a>. Seu carrinho será mantido.
+                </p>
+            </div>
+        {% endif %}
+    </div>
+{% else %}
+    <div class="card" style="text-align: center; padding: 3rem 1.5rem;">
+        <p style="font-size: 1.1rem; color: var(--muted); margin-bottom: 1.25rem;">Seu carrinho está vazio no momento.</p>
+        <div>
+            <a href="{% url 'catalogo' %}" class="btn">Explorar o catálogo</a>
+        </div>
+    </div>
+{% endif %}
+{% endblock %}
